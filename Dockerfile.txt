@@ -1,0 +1,19 @@
+FROM rasa/rasa:3.6.2
+
+# Copy your Rasa project into the image
+COPY . /app
+
+# Set the working directory
+WORKDIR /app
+
+# Install additional dependencies for custom actions
+RUN pip install --no-cache-dir requests pandas
+
+# Train the Rasa model
+RUN rasa train
+
+# Expose the port that Rasa runs on
+EXPOSE 5005
+
+# Start Rasa server with API enabled and allow all origins (for CORS)
+CMD ["run", "--enable-api", "--cors", "*", "--debug", "--credentials", "credentials.yml"]

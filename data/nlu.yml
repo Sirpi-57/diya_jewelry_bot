@@ -1,0 +1,123 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hi
+      - hello                                         
+      - hey
+      - good morning
+      - good evening
+      - good afternoon
+      - vanakam
+      - vanakkam                                                                                
+      - namaste
+      - heyy
+      - oye
+      - oii
+      - hiii
+      - heloo
+
+  - intent: track_order
+    examples: |
+      - I want to track my order
+      - How can I check my order status?
+      - Track my order please
+      - What's the status of my order?
+
+  - intent: provide_order_id
+    examples: |
+      - [ORD-123456](order_id)
+      - [ORD-987654](order_id)
+      - [ORD-586965](order_id)
+      - [ORD-458586](order_id)
+      - ORD-123456
+      - ORD-987654
+      - ORD-759684
+      - ORD-256123
+      - 123456
+      - 987654
+      - [123456](order_id)
+      - [123459](order_id)
+      - [987654](order_id) 
+      - [654321](order_id)
+      - [111222](order_id)
+      - [444555](order_id)
+      - [777888](order_id)
+      - [999000](order_id)
+      - 123456
+      - 987654
+      - 234567
+      - my order id is [ORD-123456](order_id)
+      - my order number is [123456](order_id)
+      - track order [ORD-123456](order_id)
+      - order [ORD-123456](order_id)
+      
+
+  - intent: view_order_details
+    examples: |
+      - show me order details
+      - view details
+      - can I see more details
+      - show more information about my order
+      - view all order information
+      - I want to see full order details
+      - give me complete information
+      - show order specifics
+      - details please
+      - can I get more details
+
+  - intent: report_issue
+    examples: |
+      - report an issue
+      - I have a problem with my order
+      - there's an issue with my order
+      - something's wrong with my order
+      - my order has a problem
+      - I want to report a problem
+      - my jewelry is damaged
+      - the product is not what I expected
+      - wrong item delivered
+      - file a complaint
+      - need to complain about my order
+
+  - intent: give_reviews
+    examples: |
+      - I want to give a review
+      - Can I leave feedback
+      - I'd like to share my experience
+      - I want to review your service
+      - Let me give you some feedback
+      - I want to rate your products
+      - How can I leave a review
+      - I want to tell you about my experience
+
+  - intent: submit_review
+    examples: |
+      - [ANY REVIEW TEXT WOULD MATCH THIS INTENT]
+      - The product quality is excellent
+      - I had a great experience with your service
+      - The delivery was late and the packaging was damaged
+      - Your customer service team was very helpful
+      - I love the jewelry I purchased
+      - The bracelet I bought broke after a week
+
+  - intent: upload_review_image
+    examples: |
+      - Yes, I want to upload an image
+      - I'll add a photo
+      - I have pictures to share
+      - I'd like to upload an image
+      - Yes, I have images
+      - I want to share photos
+      - Yes, upload
+
+  - intent: continue
+    examples: |
+      - No, continue
+      - Continue without image
+      - No, that's all
+      - Skip
+      - No thanks
+      - Just continue
+      - No need for images

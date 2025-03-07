@@ -1,0 +1,557 @@
+flows:
+  greet_flow:
+    description: Handles greeting interactions and redirects to product exploration, order tracking, or jewelry styling.
+    nlu_trigger:
+      - intent: greet
+    steps:
+      - action: utter_greet
+      - action: action_listen
+        next:
+          - if: slots.intent == 'track_order'
+            then: 
+              - link: track_order_flow
+          - if: slots.intent == 'get_styling_tips'
+            then:
+              - link: jewelry_styling_flow
+          - if: slots.intent == 'give_reviews'
+            then:
+              - link: give_reviews_flow
+          - if: slots.intent == 'explore_products'
+            then:
+              - id: main_category_step
+                action: utter_explore_main_category
+              - action: action_listen
+              - id: sub_category_step
+                action: utter_explore_sub_category
+              - action: action_listen
+              - action: utter_category_selected
+              - action: action_listen
+                next:
+                  # BESTSELLER FLOW
+                  - if: slots.intent == 'show_bestsellers'
+                    then:
+                      - id: bestseller_flow
+                        action: action_show_bestsellers
+                      - action: action_listen
+                        next:
+                          - if: slots.intent == 'show_more'
+                            then:
+                              - id: bestseller_more
+                                action: action_show_more
+                              - action: action_listen
+                                next:
+                                  - if: slots.intent == 'show_more'
+                                    then:
+                                      - action: action_show_more
+                                      - action: action_listen
+                                        next: bestseller_more
+                                  - if: slots.intent == 'add_to_cart'
+                                    then: 
+                                      - action: action_add_to_cart
+                                      - action: action_listen
+                                        next:
+                                          - if: slots.intent == 'view_cart'
+                                            then: view_cart_step
+                                          - if: slots.intent == 'continue_shopping'
+                                            then:
+                                              - action: action_continue_shopping
+                                              - action: action_listen
+                                                next:
+                                                  - if: slots.intent == 'add_to_cart'
+                                                    then: add_to_cart_step
+                                                  - if: slots.intent == 'show_more'
+                                                    then: bestseller_more
+                                                  - if: slots.intent == 'view_cart'
+                                                    then: view_cart_step
+                                                  - else:
+                                                      - action: utter_default
+                                                        next: END
+                                          - else:
+                                              - action: utter_default
+                                                next: END
+                                  - if: slots.intent == 'show_discounted'
+                                    then: discounted_flow
+                                  - if: slots.intent == 'show_regular'
+                                    then: regular_flow
+                                  - if: slots.intent == 'view_cart'
+                                    then: view_cart_step  # Added path to view cart
+                                  - if: slots.intent == 'explore_products'
+                                    then:
+                                      - action: utter_explore_main_category
+                                      - action: action_listen
+                                        next: END
+                                  - if: slots.intent == 'reset_category_flow'
+                                    then:
+                                      - action: action_reset_category_flow
+                                      - action: action_listen
+                                        next: main_category_step
+                                  - else:
+                                      - action: utter_default
+                                        next: END
+                          - if: slots.intent == 'add_to_cart'
+                            then: add_to_cart_step
+                          - if: slots.intent == 'show_discounted'
+                            then: discounted_flow
+                          - if: slots.intent == 'show_regular'
+                            then: regular_flow
+                          - if: slots.intent == 'view_cart'
+                            then: view_cart_step
+                          - if: slots.intent == 'explore_products'
+                            then:
+                              - action: utter_explore_main_category
+                              - action: action_listen
+                                next: END
+                          - if: slots.intent == 'reset_category_flow'
+                            then:
+                              - action: action_reset_category_flow
+                              - action: action_listen
+                                next: main_category_step
+                          - else:
+                              - action: utter_default
+                                next: END
+                  
+                  # DISCOUNTED FLOW
+                  - if: slots.intent == 'show_discounted'
+                    then:
+                      - id: discounted_flow
+                        action: action_show_discounted
+                      - action: action_listen
+                        next:
+                          - if: slots.intent == 'show_more'
+                            then:
+                              - id: discounted_more
+                                action: action_show_more
+                              - action: action_listen
+                                next:
+                                  - if: slots.intent == 'show_more'
+                                    then:
+                                      - action: action_show_more
+                                      - action: action_listen
+                                        next: discounted_more
+                                  - if: slots.intent == 'add_to_cart'
+                                    then: 
+                                      - action: action_add_to_cart
+                                      - action: action_listen
+                                        next:
+                                          - if: slots.intent == 'view_cart'
+                                            then: view_cart_step
+                                          - if: slots.intent == 'continue_shopping'
+                                            then:
+                                              - action: action_continue_shopping
+                                              - action: action_listen
+                                                next:
+                                                  - if: slots.intent == 'add_to_cart'
+                                                    then: add_to_cart_step
+                                                  - if: slots.intent == 'show_more'
+                                                    then: discounted_more
+                                                  - if: slots.intent == 'view_cart'
+                                                    then: view_cart_step
+                                                  - else:
+                                                      - action: utter_default
+                                                        next: END
+                                          - else:
+                                              - action: utter_default
+                                                next: END
+                                  - if: slots.intent == 'show_bestsellers'
+                                    then: bestseller_flow
+                                  - if: slots.intent == 'show_regular'
+                                    then: regular_flow
+                                  - if: slots.intent == 'view_cart'
+                                    then: view_cart_step  # Added path to view cart
+                                  - if: slots.intent == 'explore_products'
+                                    then:
+                                      - action: utter_explore_main_category
+                                      - action: action_listen
+                                        next: END
+                                  - if: slots.intent == 'reset_category_flow'
+                                    then:
+                                      - action: action_reset_category_flow
+                                      - action: action_listen
+                                        next: main_category_step
+                                  - else:
+                                      - action: utter_default
+                                        next: END
+                          - if: slots.intent == 'add_to_cart'
+                            then: add_to_cart_step
+                          - if: slots.intent == 'show_bestsellers'
+                            then: bestseller_flow
+                          - if: slots.intent == 'show_regular'
+                            then: regular_flow
+                          - if: slots.intent == 'view_cart'
+                            then: view_cart_step
+                          - if: slots.intent == 'explore_products'
+                            then:
+                              - action: utter_explore_main_category
+                              - action: action_listen
+                                next: END
+                          - if: slots.intent == 'reset_category_flow'
+                            then:
+                              - action: action_reset_category_flow
+                              - action: action_listen
+                                next: main_category_step
+                          - else:
+                              - action: utter_default
+                                next: END
+                  
+                  # REGULAR FLOW
+                  - if: slots.intent == 'show_regular'
+                    then:
+                      - id: regular_flow
+                        action: action_show_regular
+                      - action: action_listen
+                        next:
+                          - if: slots.intent == 'show_more'
+                            then:
+                              - id: regular_more
+                                action: action_show_more
+                              - action: action_listen
+                                next:
+                                  - if: slots.intent == 'show_more'
+                                    then:
+                                      - action: action_show_more
+                                      - action: action_listen
+                                        next: regular_more
+                                  - if: slots.intent == 'add_to_cart'
+                                    then: 
+                                      - action: action_add_to_cart
+                                      - action: action_listen
+                                        next:
+                                          - if: slots.intent == 'view_cart'
+                                            then: view_cart_step
+                                          - if: slots.intent == 'continue_shopping'
+                                            then:
+                                              - action: action_continue_shopping
+                                              - action: action_listen
+                                                next:
+                                                  - if: slots.intent == 'add_to_cart'
+                                                    then: add_to_cart_step
+                                                  - if: slots.intent == 'show_more'
+                                                    then: regular_more
+                                                  - if: slots.intent == 'view_cart'
+                                                    then: view_cart_step
+                                                  - else:
+                                                      - action: utter_default
+                                                        next: END
+                                          - else:
+                                              - action: utter_default
+                                                next: END
+                                  - if: slots.intent == 'show_bestsellers'
+                                    then: bestseller_flow
+                                  - if: slots.intent == 'show_discounted'
+                                    then: discounted_flow
+                                  - if: slots.intent == 'view_cart'
+                                    then: view_cart_step  # Added path to view cart
+                                  - if: slots.intent == 'explore_products'
+                                    then:
+                                      - action: utter_explore_main_category
+                                      - action: action_listen
+                                        next: END
+                                  - if: slots.intent == 'reset_category_flow'
+                                    then:
+                                      - action: action_reset_category_flow
+                                      - action: action_listen
+                                        next: main_category_step
+                                  - else:
+                                      - action: utter_default
+                                        next: END
+                          - if: slots.intent == 'add_to_cart'
+                            then: add_to_cart_step
+                          - if: slots.intent == 'show_bestsellers'
+                            then: bestseller_flow
+                          - if: slots.intent == 'show_discounted'
+                            then: discounted_flow
+                          - if: slots.intent == 'view_cart'
+                            then: view_cart_step
+                          - if: slots.intent == 'explore_products'
+                            then:
+                              - action: utter_explore_main_category
+                              - action: action_listen
+                                next: END
+                          - if: slots.intent == 'reset_category_flow'
+                            then:
+                              - action: action_reset_category_flow
+                              - action: action_listen
+                                next: main_category_step
+                          - else:
+                              - action: utter_default
+                                next: END
+                  
+                  # ADD TO CART FLOW
+                  - if: slots.intent == 'add_to_cart'
+                    then:
+                      - id: add_to_cart_step
+                        action: action_add_to_cart
+                      - action: action_listen
+                        next:
+                          - if: slots.intent == 'view_cart'
+                            then: view_cart_step
+                          - if: slots.intent == 'continue_shopping'
+                            then:
+                              - action: action_continue_shopping
+                              - action: action_listen
+                                next:
+                                  - if: slots.intent == 'add_to_cart'
+                                    then: add_to_cart_step
+                                  - if: slots.intent == 'show_more'
+                                    then: 
+                                      - action: action_show_more
+                                      - action: action_listen
+                                        next:
+                                          - if: slots.intent == 'view_cart'
+                                            then: view_cart_step
+                                          - else:
+                                              - action: utter_default
+                                                next: END
+                                  - if: slots.intent == 'show_bestsellers'
+                                    then: bestseller_flow
+                                  - if: slots.intent == 'show_discounted'
+                                    then: discounted_flow
+                                  - if: slots.intent == 'show_regular'
+                                    then: regular_flow
+                                  - if: slots.intent == 'view_cart'
+                                    then: view_cart_step
+                                  - if: slots.intent == 'reset_category_flow'
+                                    then: reset_category_flow
+                                  - else:
+                                      - action: utter_default
+                                        next: END
+                          - else:
+                              - action: utter_default
+                                next: END
+                  
+                  # VIEW CART FLOW
+                  - if: slots.intent == 'view_cart'
+                    then:
+                      - id: view_cart_step
+                        action: action_view_cart
+                      - action: action_listen
+                        next:
+                          - if: slots.intent == 'continue_shopping'
+                            then:
+                              - action: action_continue_shopping
+                              - action: action_listen
+                                next:
+                                  - if: slots.intent == 'add_to_cart'
+                                    then: add_to_cart_step
+                                  - if: slots.intent == 'show_more'
+                                    then:
+                                      - action: action_show_more
+                                      - action: action_listen
+                                        next:
+                                          - if: slots.intent == 'view_cart'
+                                            then: view_cart_step
+                                          - else:
+                                              - action: utter_default
+                                                next: END
+                                  - if: slots.intent == 'show_bestsellers'
+                                    then: bestseller_flow
+                                  - if: slots.intent == 'show_discounted'
+                                    then: discounted_flow
+                                  - if: slots.intent == 'show_regular'
+                                    then: regular_flow
+                                  - if: slots.intent == 'view_cart'
+                                    then: view_cart_step
+                                  - if: slots.intent == 'reset_category_flow'
+                                    then: reset_category_flow
+                                  - else:
+                                      - action: utter_default
+                                        next: END
+                          - if: slots.intent == 'update_cart'
+                            then:
+                              - action: action_update_cart
+                              - action: action_listen
+                                next: view_cart_step
+                          - if: slots.intent == 'clear_cart'
+                            then:
+                              - action: action_clear_cart
+                              - action: action_listen
+                                next: main_category_step
+                          - if: slots.intent == 'checkout'
+                            then:
+                              - action: action_checkout
+                              - action: action_listen
+                                next:
+                                  - if: slots.intent == 'explore_products'
+                                    then: main_category_step
+                                  - if: slots.intent == 'reset_category_flow'
+                                    then: reset_category_flow
+                                  - else:
+                                      - action: utter_default
+                                        next: END
+                          - if: slots.intent == 'explore_products'
+                            then: main_category_step
+                          - if: slots.intent == 'reset_category_flow'
+                            then: reset_category_flow
+                          - if: slots.intent == 'show_bestsellers'
+                            then: bestseller_flow
+                          - if: slots.intent == 'show_discounted'
+                            then: discounted_flow
+                          - if: slots.intent == 'show_regular'
+                            then: regular_flow
+                          - else:
+                              - action: utter_default
+                                next: END
+                  
+                  # RESET CATEGORY FLOW
+                  - if: slots.intent == 'reset_category_flow'
+                    then:
+                      - id: reset_category_flow
+                        action: action_reset_category_flow
+                      - action: action_listen
+                        next:
+                          - if: slots.intent == 'choose_main_category'
+                            then: sub_category_step
+                          - if: slots.intent == 'explore_products'
+                            then: main_category_step
+                          - if: slots.intent == 'view_cart'
+                            then: view_cart_step
+                          - else:
+                              - action: utter_default
+                                next: main_category_step
+                  - else:
+                      - id: fallback_step
+                        action: utter_default
+                        next: END
+          - else:
+              - action: utter_default
+                next: END
+
+  track_order_flow:
+    description: Handles order tracking requests with detailed status information and issue resolution
+    steps:
+      - action: utter_ask_order_id  # First ask for the order ID
+      - action: action_listen       # Listen for user input
+      - action: action_validate_order_id  # Directly validate whatever the user said
+      - action: action_show_order_status  # Show order status regardless
+      - action: action_listen
+        next:
+          - if: slots.intent == 'view_order_details'
+            then:
+              - action: action_show_order_details
+              - action: action_listen
+                next:
+                  - if: slots.intent == 'track_order'
+                    then: 
+                      - link: track_order_flow
+                  - if: slots.intent == 'report_issue'
+                    then:
+                      - action: action_report_issue
+                      - action: action_listen
+                        next:
+                          - if: slots.intent == 'track_order'
+                            then: 
+                              - link: track_order_flow
+                          - else:
+                              - action: utter_default
+                                next: END
+                  - if: slots.intent == 'greet'
+                    then: 
+                      - link: greet_flow
+                  - else:
+                      - action: utter_anything_else
+                      - action: action_listen
+                        next:
+                          - if: slots.intent == 'track_order'
+                            then:
+                              - link: track_order_flow
+                          - else:
+                              - action: utter_default
+                                next: END
+          - if: slots.intent == 'report_issue'
+            then:
+              - action: action_report_issue
+              - action: action_listen
+                next:
+                  - if: slots.intent == 'track_order'
+                    then: 
+                      - link: track_order_flow
+                  - if: slots.intent == 'greet'
+                    then: 
+                      - link: greet_flow
+                  - else:
+                      - action: utter_anything_else
+                      - action: action_listen
+                        next:
+                          - if: slots.intent == 'track_order'
+                            then:
+                              - link: track_order_flow
+                          - else:
+                              - action: utter_default
+                                next: END
+          - if: slots.intent == 'track_order'
+            then: 
+              - link: track_order_flow
+          - if: slots.intent == 'greet'
+            then: 
+              - link: greet_flow
+          - else:
+              - action: utter_anything_else
+              - action: action_listen
+                next:
+                  - if: slots.intent == 'track_order'
+                    then:
+                      - link: track_order_flow
+                  - else:
+                      - action: utter_default
+                        next: END
+                        
+  jewelry_styling_flow:
+    description: Handles jewelry styling advice questions using RAG with PDF knowledge base
+    steps:
+      - action: action_initialize_jewelry_styling  # Initialize the service
+      # First interaction - introduce the jewelry styling assistant
+      - action: utter_jewelry_styling_intro
+      - id: styling_loop
+        action: action_listen
+        next:
+          - if: slots.intent == 'greet'
+            then: 
+              - action: utter_anything_else
+                next: END
+          - else:
+              # Process the user's jewelry styling question without checking the intent
+              - action: action_jewelry_styling_advice
+              - action: action_listen
+                next: styling_loop  # Always loop back to styling_loop
+  
+  give_reviews_flow:
+    description: Handles the process of collecting and analyzing customer reviews
+    steps:
+      - action: utter_ask_for_review  # First ask for the review
+      - action: action_listen         # Listen for user input
+      - action: action_analyze_review_sentiment  # Analyze sentiment and respond accordingly
+      - action: action_listen         # Listen for image upload decision
+        next:
+          - if: slots.intent == 'upload_review_image'
+            then:
+              - action: action_handle_review_image
+              - action: action_listen
+                next:
+                  - if: slots.intent == 'greet'
+                    then: 
+                      - link: greet_flow
+                  - else:
+                      - action: utter_confirm_review_submission
+                      - action: action_listen
+                        next: END
+          - if: slots.intent == 'continue'
+            then:
+              - action: utter_confirm_review_submission
+              - action: action_listen
+                next:
+                  - if: slots.intent == 'greet'
+                    then: 
+                      - link: greet_flow
+                  - else:
+                      - action: utter_default
+                        next: END
+          - else:
+              - action: utter_confirm_review_submission
+              - action: action_listen
+                next:
+                  - if: slots.intent == 'greet'
+                    then: 
+                      - link: greet_flow
+                  - else:
+                      - action: utter_default
+                        next: END

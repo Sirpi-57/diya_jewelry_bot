@@ -1,0 +1,65 @@
+flows:
+  pattern_greet:
+    description: Handles user greetings.
+    steps:
+      - action: utter_greet
+
+  pattern_explore_products:
+    description: Handles product exploration queries.
+    steps:
+      - action: utter_explore_main_category
+
+  pattern_choose_category:
+    description: Handles user's category choice.
+    steps:
+      - action: utter_explore_sub_category
+
+  pattern_provide_order_id:
+    description: Handles order ID submissions from buttons
+    steps:
+      - action: action_validate_order_id
+  
+  pattern_track_order:
+    description: Handles order tracking queries
+    steps:
+      - action: action_initiate_order_tracking
+  
+  pattern_reset_category:
+    description: Handles category reset requests
+    steps:
+      - action: action_reset_category_flow
+      
+  pattern_add_to_cart:
+    description: Adds an item to the cart
+    steps:
+      - action: action_add_to_cart
+      
+  pattern_view_cart:
+    description: Shows cart contents
+    steps:
+      - action: action_view_cart
+      
+  pattern_update_cart:
+    description: Updates item quantities in cart
+    steps:
+      - action: action_update_cart
+      
+  pattern_clear_cart:
+    description: Clears the shopping cart
+    steps:
+      - action: action_clear_cart
+      
+  pattern_continue_shopping:
+    description: Returns to shopping flow
+    steps:
+      - action: action_continue_shopping
+      
+  pattern_checkout:
+    description: Processes checkout
+    steps:
+      - action: action_checkout
+
+  pattern_fallback:
+    description: Handles fallback when user input is unclear.
+    steps:
+      - action: utter_default

@@ -1,0 +1,408 @@
+version: "3.1"
+
+intents:
+  - greet
+  - explore_products
+  - track_order
+  - choose_main_category
+  - choose_sub_category
+  - show_bestsellers
+  - show_discounted
+  - show_regular
+  - show_more
+  - provide_order_id
+  - reset_category_flow
+  - add_to_cart
+  - view_cart
+  - update_cart
+  - clear_cart
+  - continue_shopping
+  - checkout
+  - view_order_details
+  - report_issue
+  - get_styling_tips
+  - give_reviews
+  - submit_review
+  - upload_review_image
+  - continue
+  
+entities:
+  - main_category
+  - sub_category
+  - order_id
+  - product_idx
+  - product_id
+  - action
+  - sentiment
+  
+actions:
+  - utter_greet
+  - utter_explore_main_category
+  - utter_explore_sub_category
+  - utter_category_selected
+  - utter_default
+  - utter_ask_order_id
+  - utter_order_status
+  - utter_anything_else
+  - action_show_bestsellers
+  - action_show_discounted
+  - action_show_regular
+  - action_show_more
+  - action_reset_category_flow
+  - action_add_to_cart
+  - action_view_cart
+  - action_update_cart
+  - action_clear_cart
+  - action_continue_shopping
+  - action_checkout
+  - action_validate_order_id
+  - action_show_order_status
+  - action_show_order_details
+  - action_report_issue
+  - action_initiate_order_tracking
+  - action_initialize_jewelry_styling
+  - action_jewelry_styling_advice
+  - action_analyze_review_sentiment
+  - action_handle_review_image
+  - utter_ask_for_review
+  - utter_thank_positive_review
+  - utter_thank_negative_review
+  - utter_ask_for_image
+  - utter_confirm_review_submission
+  
+slots:
+  main_category:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: main_category
+  
+  sub_category:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: sub_category
+
+  current_page:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: custom
+      
+  view_type:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
+        
+  last_view_type:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
+  
+  shopping_cart:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+  
+  shopping_context:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
+      
+  last_page:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: custom
+
+  order_id:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: order_id
+
+  order_validation:
+    type: categorical
+    values:
+      - success
+      - failed
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  order_details:
+    type: any
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  issue_reference:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  jewelry_styling_initialized:
+    type: bool
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  review_text:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  review_sentiment:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
+
+  review_image:
+    type: bool
+    influence_conversation: false
+    mappings:
+      - type: custom
+  
+  intent:
+    type: categorical
+    values:
+      - show_bestsellers
+      - show_discounted
+      - show_regular
+      - show_more
+      - explore_products
+      - greet
+      - track_order
+      - choose_main_category
+      - choose_sub_category
+      - reset_category_flow
+      - add_to_cart
+      - view_cart
+      - update_cart
+      - clear_cart
+      - continue_shopping
+      - checkout
+      - provide_order_id
+      - view_order_details
+      - report_issue
+      - get_styling_tips
+      - give_reviews
+      - submit_review
+      - upload_review_image
+      - continue
+    influence_conversation: true
+    mappings:
+      - type: from_intent
+        intent: show_bestsellers
+        value: show_bestsellers
+      - type: from_intent
+        intent: show_discounted
+        value: show_discounted
+      - type: from_intent
+        intent: show_regular
+        value: show_regular
+      - type: from_intent
+        intent: show_more
+        value: show_more
+      - type: from_intent
+        intent: explore_products
+        value: explore_products
+      - type: from_intent
+        intent: greet
+        value: greet
+      - type: from_intent
+        intent: track_order
+        value: track_order
+      - type: from_intent
+        intent: choose_main_category
+        value: choose_main_category
+      - type: from_intent
+        intent: choose_sub_category
+        value: choose_sub_category
+      - type: from_intent
+        intent: reset_category_flow
+        value: reset_category_flow
+      - type: from_intent
+        intent: add_to_cart
+        value: add_to_cart
+      - type: from_intent
+        intent: view_cart
+        value: view_cart
+      - type: from_intent
+        intent: update_cart
+        value: update_cart
+      - type: from_intent
+        intent: clear_cart
+        value: clear_cart
+      - type: from_intent
+        intent: continue_shopping
+        value: continue_shopping
+      - type: from_intent
+        intent: checkout
+        value: checkout
+      - type: from_intent
+        intent: provide_order_id
+        value: provide_order_id
+      - type: from_intent
+        intent: view_order_details
+        value: view_order_details
+      - type: from_intent
+        intent: report_issue
+        value: report_issue
+      - type: from_intent
+        intent: get_styling_tips
+        value: get_styling_tips
+      - type: from_intent
+        intent: give_reviews
+        value: give_reviews
+      - type: from_intent
+        intent: submit_review
+        value: submit_review
+      - type: from_intent
+        intent: upload_review_image
+        value: upload_review_image
+      - type: from_intent
+        intent: continue
+        value: continue
+
+responses:
+  utter_greet:
+  - text: "Hey There! I am Diya. How can I help you?"
+    buttons:
+    - title: "Explore Products"
+      payload: '/explore_products'
+    - title: "Track Order"
+      payload: '/track_order'
+    - title: "Get Styling Tips"
+      payload: '/get_styling_tips'
+    - title: "Give Reviews"
+      payload: '/give_reviews'
+
+  utter_explore_main_category:
+    - text: "Great! Please select the main category:"
+      buttons:
+        - title: "American Diamond"
+          payload: '/choose_main_category{"main_category": "American Diamond"}'
+        - title: "Golden Jewellery"
+          payload: '/choose_main_category{"main_category": "Golden Jewellery"}'
+        - title: "Silver Jewellery"
+          payload: '/choose_main_category{"main_category": "Silver Jewellery"}'
+
+  utter_explore_sub_category:
+    - text: "Please select the specific type of {main_category}:"
+      buttons:
+        - title: "Haaram"
+          payload: '/choose_sub_category{"sub_category": "Haaram"}'
+        - title: "Neckpiece"
+          payload: '/choose_sub_category{"sub_category": "Neckpiece"}'
+        - title: "Choker Piece"
+          payload: '/choose_sub_category{"sub_category": "Choker Piece"}'
+        - title: "Earrings"
+          payload: '/choose_sub_category{"sub_category": "Earrings"}'
+        - title: "Bangles"
+          payload: '/choose_sub_category{"sub_category": "Bangles"}'
+        - title: "Hipbelt"
+          payload: '/choose_sub_category{"sub_category": "Hipbelt"}'
+        - title: "Jadabillai"
+          payload: '/choose_sub_category{"sub_category": "Jadabillai"}'
+        - title: "Hair Bun"
+          payload: '/choose_sub_category{"sub_category": "Hair Bun"}'
+        - title: "Vanki"
+          payload: '/choose_sub_category{"sub_category": "Vanki"}'
+        - title: "Tikka"
+          payload: '/choose_sub_category{"sub_category": "Tikka"}'
+        - title: "Ear Chain"
+          payload: '/choose_sub_category{"sub_category": "Ear Chain"}'
+        - title: "Anklet"
+          payload: '/choose_sub_category{"sub_category": "Anklet"}'
+        - title: "Bracelet"
+          payload: '/choose_sub_category{"sub_category": "Bracelet"}'
+        - title: "Hipchain"
+          payload: '/choose_sub_category{"sub_category": "Hipchain"}'
+
+  utter_category_selected:
+    - text: "Great! You have selected {main_category} {sub_category}! How would you like to explore?"
+      buttons:
+        - title: "Show bestsellers"
+          payload: '/show_bestsellers'
+        - title: "Show discounted products"
+          payload: '/show_discounted'
+        - title: "Show all products"
+          payload: '/show_regular'
+
+  utter_default:
+    - text: "I'm sorry, I didn't understand that. Can you please rephrase or select one of the options?"
+
+  utter_ask_order_id:
+    - text: "To track your order, please select one of the sample order IDs below, or type your order ID."
+      buttons:
+      - title: "Track ORD-123456"
+        payload: '/provide_order_id{\"order_id\": \"ORD-123456\"}'
+      - title: "Track ORD-987654"
+        payload: '/provide_order_id{\"order_id\": \"ORD-987654\"}'
+      - title: "Back to Main Menu"
+        payload: '/greet'
+
+  utter_order_status:
+    - text: "I've found your order with ID {order_id}. Here's the current status..."
+
+  utter_anything_else:
+    - text: "Is there anything else I can help you with today?"
+      metadata:
+        rephrase: False
+      buttons:
+      - title: "Track Another Order"
+        payload: '/track_order'
+      - title: "Explore Products"
+        payload: '/explore_products'
+      - title: "View Cart"
+        payload: '/view_cart'
+      - title: "Back to Main Menu"
+        payload: '/greet'
+
+  utter_jewelry_styling_intro:
+    - text: "I can help you with jewelry styling advice! Ask me about how to match jewelry with outfits, choose pieces for different occasions, or find your personal jewelry style."
+      metadata:
+        from_jewelry_pdf: true
+        rephrase: false
+
+  utter_ask_for_review:
+    - text: "We value your feedback! Please share your experience with our products or service."
+  
+  utter_thank_positive_review:
+    - text: "Thank you so much for your positive feedback! We're delighted that you had a great experience with us."
+    - text: "We really appreciate your kind words! Your positive review makes our day."
+    - text: "Thank you for the wonderful review! We're thrilled that you're happy with our products and service."
+    - text: "Your positive feedback means a lot to us! Thank you for taking the time to share your experience."
+    - text: "We're so glad you enjoyed your experience! Thank you for the lovely review."
+  
+  utter_thank_negative_review:
+    - text: "We sincerely apologize for your experience. Your feedback is valuable, and we'll work hard to address these issues."
+    - text: "Thank you for bringing this to our attention. We're sorry for the inconvenience and will use your feedback to improve."
+    - text: "We apologize that we didn't meet your expectations. We appreciate your honest feedback and will strive to do better."
+    - text: "We're sorry to hear about your experience. Your feedback helps us identify areas where we need to improve."
+    - text: "Thank you for your candid feedback. We apologize for the disappointment and will take your comments seriously."
+  
+  utter_ask_for_image:
+    - text: "Would you like to upload an image with your review?"
+      buttons:
+      - title: "Yes, upload image"
+        payload: '/upload_review_image'
+      - title: "No, continue"
+        payload: '/continue'
+  
+  utter_confirm_review_submission:
+    - text: "Thank you for submitting your review! We truly value your feedback."
+      buttons:
+      - title: "Back to Main Menu"
+        payload: '/greet'
